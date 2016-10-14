@@ -1598,10 +1598,10 @@ var yadcf = (function ($) {
             filterActionStr = '';
         }
 
-        $(filter_selector_string).append("<input onkeydown=\"yadcf.preventDefaultForEnter(event);\" placeholder=\"" + filter_default_label[0] + "\" id=\"" + fromId + "\" class=\"yadcf-filter-range-date yadcf-filter-range\" " + filterActionStr + "></input>");
+        $(filter_selector_string).append("<input onkeydown=\"yadcf.preventDefaultForEnter(event);\" placeholder=\"" + filter_default_label[0] + "\" id=\"" + fromId + "\" class=\"yadcf-filter-range-date yadcf-filter-range yadcf-filter form-control\" " + filterActionStr + "></input>");
         $(filter_selector_string).append("<span class=\"yadcf-filter-range-date-seperator\" >" +
             "</span>");
-        $(filter_selector_string).append("<input onkeydown=\"yadcf.preventDefaultForEnter(event);\" placeholder=\"" + filter_default_label[1] + "\" id=\"" + toId + "\" class=\"yadcf-filter-range-date yadcf-filter-range\" " + filterActionStr + "></input>");
+        $(filter_selector_string).append("<input onkeydown=\"yadcf.preventDefaultForEnter(event);\" placeholder=\"" + filter_default_label[1] + "\" id=\"" + toId + "\" class=\"yadcf-filter-range-date yadcf-filter-range yadcf-filter form-control\" " + filterActionStr + "></input>");
 
         $fromInput = $("#" + fromId);
         $toInput = $("#" + toId);
@@ -3412,7 +3412,7 @@ var yadcf = (function ($) {
         } else {
             filters_position = '.dataTables_scrollFoot';
         }
-        if (oTable.fnSettings().oScroll.sX !== '' || oTable.fnSettings().oScroll.sY !== '') {
+        if (oTable.fnSettings() && (oTable.fnSettings().oScroll.sX !== '' || oTable.fnSettings().oScroll.sY !== '')) {
             $tmpSelector = $(table_selector).closest('.dataTables_scroll').find(filters_position + ' table');
             $tmpSelector.addClass('yadcf-datatables-table-' + table_selector_jq_friendly);
         }
@@ -3484,7 +3484,9 @@ var yadcf = (function ($) {
         //events that affects both DOM and Ajax
         if (yadcfVersionCheck('1.10')) {
             $(document).off('draw.dt', oTable.selector).on('draw.dt', oTable.selector, function (event, settings) {
-                appendFilters(oTable, yadcf.getOptions(settings.oInstance.selector), settings.oInstance.selector, settings);
+                if (oTable.attr('id') === settings.sInstance) {
+                    appendFilters(oTable, yadcf.getOptions(settings.oInstance.selector), settings.oInstance.selector, settings);
+                }
             });
             $(document).off('column-visibility.dt', oTable.selector).on('column-visibility.dt', oTable.selector, function (e, settings, col_num, state) {
                 var obj = {},
