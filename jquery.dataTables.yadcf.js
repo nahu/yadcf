@@ -3396,7 +3396,7 @@ var yadcf = (function ($) {
     function isDOMSource(tableVar) {
         var settingsDt;
         settingsDt = getSettingsObjFromTable(tableVar);
-        if (settingsDt.sAjaxSource == undefined && settingsDt.ajax == undefined && settingsDt.oFeatures.bServerSide !== true) {
+        if (settingsDt && settingsDt.sAjaxSource == undefined && settingsDt.ajax == undefined && settingsDt.oFeatures.bServerSide !== true) {
             return true;
         }
         return false;
